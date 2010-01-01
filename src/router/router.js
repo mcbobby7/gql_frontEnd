@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import App from '../components/App/conponents/App';
 import Home from '../components/Home/components/home';
 import Bookings from '../components/bookings/components/bookings';
@@ -12,11 +12,12 @@ class ReactRouter extends React.Component {
         return (
             <React.Fragment>
                 <App>
+                    {localStorage.getItem('token') && <Redirect exact from="/login" to="/" />}
                     <Route exact path="/" component={Home} />
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/signup" component={SignUp} />
-                    <Route exact path="/bookings" component={Bookings} />
-                    <Route exact path="/events" component={Events} />
+                    {!localStorage.getItem('token') && <Route exact path="/login" component={Login} />}
+                    {!localStorage.getItem('token') && <Route exact path="/signup" component={SignUp} />}
+                    {localStorage.getItem('token') && <Route exact path="/bookings" component={Bookings} />}
+                    {localStorage.getItem('token') && <Route exact path="/events" component={Events} />}
                 </App>
             </React.Fragment>
         );

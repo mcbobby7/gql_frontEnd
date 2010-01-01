@@ -29,8 +29,6 @@ class SignIn extends React.Component {
         password: '',
     };
 
-    static ContextType = AuthContext;
-
     onSubmit = async () => {
         console.log(this.state);
         const response = await this.props.mutate({

@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import MyHeader from './Header';
 import { Link } from 'react-router-dom';
 import Footer from './footer';
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
 import { ApolloProvider } from 'react-apollo';
 import GlobalStyles from '../../../globalStyles';
 import { Layout, Menu, Icon, Row, Col } from 'antd';
@@ -12,8 +14,23 @@ import 'semantic-ui-css/semantic.min.css';
 
 const { Header, Sider, Content } = Layout;
 
-const apolloClient = new ApolloClient({
+const httpLink = createHttpLink({
     uri: 'http://localhost:5000/grapghql',
+});
+
+const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem('token');
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : '',
+        },
+    };
+});
+
+const client = new ApolloClient({
+    catch: new InMemoryCache(),
+    link: authLink.concat(httpLink),
 });
 
 const ResultWrapper = styled.div`
@@ -28,11 +45,6 @@ class App extends Component {
         collapsed: false,
         token: null,
         userId: null,
-    };
-    login = () => {
-        localStorage.setItem('token', null);
-        localStorage.setItem('userId', null);
-        localStorage.setItem('tokenExpiration', null);
     };
 
     logout = () => {
@@ -49,7 +61,7 @@ class App extends Component {
     render() {
         const { children } = this.props;
         return (
-            <ApolloProvider client={apolloClient}>
+            <ApolloProvider client={client}>
                 <AuthContext.Provider
                     value={{
                         login: this.login,

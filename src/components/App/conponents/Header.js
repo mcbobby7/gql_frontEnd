@@ -20,6 +20,11 @@ const HeaderWrapper = styled.div`
         /* float: right; */
         margin-right: 70px;
     }
+    .img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+    }
 `;
 
 const menu = (
@@ -50,7 +55,7 @@ class header extends Component {
             <HeaderWrapper>
                 <Zoom left cascade>
                     <Link to="/">
-                        <h1> Website Name</h1>
+                        <img className="img" src="/logo.png" alt="logo" />
                     </Link>
                 </Zoom>
                 <Dropdown overlay={menu}>
