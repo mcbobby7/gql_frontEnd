@@ -11,6 +11,7 @@ const HeaderWrapper = styled.div`
     margin: 0;
     padding: 15px;
     text-align: center;
+    clear: both;
     h1 {
         color: white;
     }
