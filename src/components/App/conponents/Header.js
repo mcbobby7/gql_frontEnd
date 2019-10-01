@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Zoom from 'react-reveal/Zoom';
-import { Avatar, Tooltip } from 'antd';
+import { Menu, Dropdown, Icon, Avatar, Tooltip } from 'antd';
+import { Link } from 'react-router-dom';
 
 const HeaderWrapper = styled.div`
     display: flex;
     justify-content: space-between;
-    background-color: #022140;
+    background-color: #001529;
     font-size: 80%;
     margin: 0;
     padding: 15px;
@@ -21,16 +22,44 @@ const HeaderWrapper = styled.div`
     }
 `;
 
+const menu = (
+    <Menu>
+        {!localStorage.getItem('token') && (
+            <Menu.Item>
+                <a rel="noopener noreferrer" href="/login">
+                    Login
+                </a>
+            </Menu.Item>
+        )}
+        {!localStorage.getItem('token') && (
+            <Menu.Item>
+                <a rel="noopener noreferrer" href="/signup">
+                    Sign Up
+                </a>
+            </Menu.Item>
+        )}
+        {/* <Menu.Item>
+            <button onClick={this.onClick}>Log Out</button>
+        </Menu.Item> */}
+    </Menu>
+);
+
 class header extends Component {
     render() {
         return (
             <HeaderWrapper>
                 <Zoom left cascade>
-                    <h1> Website Name</h1>
+                    <Link to="/">
+                        <h1> Website Name</h1>
+                    </Link>
                 </Zoom>
-                <Tooltip placement="bottom" title="Login">
-                    <Avatar className="avatar" size="large" icon="user" />
-                </Tooltip>
+                <Dropdown overlay={menu}>
+                    <a className="ant-dropdown-link" href="#">
+                        <Tooltip placement="top" title="Sign up and Login">
+                            <Avatar className="avatar" size="large" icon="user" />
+                        </Tooltip>
+                    </a>
+                </Dropdown>
             </HeaderWrapper>
         );
     }
