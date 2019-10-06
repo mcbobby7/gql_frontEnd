@@ -1,83 +1,111 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import Jello from 'react-reveal/Slide';
 import styled from 'styled-components';
-import { Skeleton, Spin } from 'antd';
+import { Skeleton, Spin, Button } from 'antd';
 import 'antd/dist/antd.css';
 
-const reposQuery = gql`
-    query Myrepositories($id: String!) {
-        country(code: $id) {
-            name
-            code
-            phone
-            currency
+const bookings = gql`
+    query {
+        bookings {
+            event {
+                title
+                date
+            }
+            createdAt
+            updatedAt
+            _id
         }
     }
 `;
 
 const HeaderWrapper = styled.div`
+    text-align: left;
+    border: 3px solid #001529;
+    padding: 3rem;
+    margin: 2rem auto;
+    width: 40rem;
+    max-width: 97%;
     .loading {
         padding-top: 100px;
     }
     .load {
         padding: 50px;
     }
-    .country {
-        width: 80%;
-        height: 100%;
-        background-color: #022140;
-        color: white;
-        margin-top: 200px;
-        margin-left: 50px;
-        text-align: left;
-        padding: 30px;
-        padding-top: 50px;
-        padding-bottom: 50px;
-        border-radius: 20px;
+    ul {
+        width: 50rem;
+        max-width: 95%;
+        margin: 2rem auto;
+        list-style: none;
+        padding: 0;
+        color: red;
     }
-    .country h1 {
-        color: white;
+    li {
+        margin: 1rem 0;
+        padding: 1rem;
+        border: 3px solid #001529;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    li h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #001529;
+    }
+    li h2 {
+        margin: 0;
+        font-size: 1rem;
+        color: red;
+    }
+    li p {
+        margin: 0;
     }
 `;
 
-class Post extends Component {
+class Bookings extends Component {
     render() {
-        const { params } = this.props.match;
         return (
             <div>
-                <Query query={reposQuery} variables={{ id: params.code }}>
+                <Query query={bookings}>
                     {({ data, loading, error }) => {
                         if (loading)
                             return (
-                                <div style={{ paddingTop: '100px' }}>
-                                    <Spin style={{ paddingTop: '50px' }} size="large" />
-                                    <Skeleton active />
-                                </div>
+                                <HeaderWrapper>
+                                    <Spin style={{ paddingLeft: '150px' }} size="large" />
+                                </HeaderWrapper>
                             );
                         if (error) return <p>{error.message}</p>;
-                        return (
-                            <HeaderWrapper>
-                                <Jello top>
-                                    <div className="country" key={data.country.code}>
-                                        <h1>
-                                            <b>Country</b>: {data.country.name}
-                                        </h1>
-                                        <h1>
-                                            <b>Phone</b>: {data.country.phone}
-                                        </h1>
-                                        <h1>
-                                            <b>Currency</b>: {data.country.currency}
-                                        </h1>
-                                    </div>
-                                </Jello>
-                            </HeaderWrapper>
-                        );
+                        if (error) return <p>{error.message}</p>;
+                        return data.bookings.map(booking => {
+                            return (
+                                <HeaderWrapper>
+                                    <ul>
+                                        <li key={booking._id}>
+                                            <div>
+                                                <h1>{booking.event.title}</h1>
+                                                <h2
+                                                    style={{
+                                                        textAlign: 'left',
+                                                    }}
+                                                >
+                                                    {new Date(
+                                                        booking.event.date,
+                                                    ).toLocaleDateString()}
+                                                </h2>
+                                            </div>
+                                            <div>
+                                                <Button type="primary"> View This Evet </Button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </HeaderWrapper>
+                            );
+                        });
                     }}
                 </Query>
             </div>
         );
     }
 }
-export default Post;
+export default Bookings;

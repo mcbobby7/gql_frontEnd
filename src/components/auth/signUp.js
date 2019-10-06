@@ -1,12 +1,8 @@
 import React from 'react';
-import Roll from 'react-reveal/Roll';
-import { Link } from 'react-router-dom';
-import Slide from 'react-reveal/Slide';
-import Zoom from 'react-reveal/Zoom';
 import styled from 'styled-components';
 import { graphql } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import { Button, Container, Header, Input, Checkbox } from 'semantic-ui-react';
+import { Button, Container, Header, Input } from 'semantic-ui-react';
 
 const LoginWrapper = styled.div`
     .input {
@@ -80,7 +76,6 @@ class SignIn extends React.Component {
     }
 }
 
-// const SignInForm = Form.create()(SignIn);
 const register = gql`
     mutation($email: String!, $password: String!) {
         createUser(userInput: { email: $email, password: $password }) {

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Zoom from 'react-reveal/Zoom';
-import { Menu, Dropdown, Icon, Avatar, Tooltip } from 'antd';
+import { Menu, Dropdown, Avatar, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
+import Nav from './menu';
 
 const HeaderWrapper = styled.div`
     display: flex;
@@ -17,7 +18,6 @@ const HeaderWrapper = styled.div`
         color: white;
     }
     .avatar {
-        /* float: right; */
         margin-right: 70px;
     }
     .img {
@@ -43,9 +43,6 @@ const menu = (
                 </a>
             </Menu.Item>
         )}
-        {/* <Menu.Item>
-            <button onClick={this.onClick}>Log Out</button>
-        </Menu.Item> */}
     </Menu>
 );
 
@@ -53,6 +50,7 @@ class header extends Component {
     render() {
         return (
             <HeaderWrapper>
+                <Nav>menu</Nav>
                 <Zoom left cascade>
                     <Link to="/">
                         <img className="img" src="/logo.png" alt="logo" />

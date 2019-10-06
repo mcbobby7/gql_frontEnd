@@ -1,0 +1,133 @@
+.toggle-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 24px;
+    width: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .toggle-button:focus {
+    outline: none;
+  }
+  
+  .toggle-button__line {
+    width: 30px;
+    height: 2px;
+    background: #1890FF;
+  }
+  .side-drawer {
+    height: 100%;
+    background: #001529;
+    box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70%;
+    max-width: 400px;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-out;
+  }
+  
+  .side-drawer.open {
+    transform: translateX(0);
+  }
+  .side-drawer ul {
+    height: 100%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .side-drawer li {
+    margin: 0.5rem 0;
+  }
+  .side-drawer a {
+    text-decoration: none;
+    font-size: 1.2rem;
+  }
+  .side-drawer a:hover,
+  .side-drawer a:active
+  .link 
+  {
+    color: #1890FF;
+  }
+  .toolbar {
+      position: fixed;
+      width: 100%;
+      background: #001529;
+      height: 56px;
+      top: 0;
+      left: 0;
+      z-index: 99;
+  }
+  .toolbar__navigation {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 1rem;
+  }
+  .toolbar__logo a {
+    color: #1890FF;
+    text-decoration: none;
+    font-size: 1.5rem;
+  }
+  .toolbar_navigation-items a {
+    color: white;
+    text-decoration: none;
+  }
+  .toolbar_navigation-items li {
+    padding: 0 0.5rem;
+  }
+  .toolbar_navigation-items ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  .toolbar_navigation-items a:hover,
+  .toolbar_navigation-items a:active
+  .link 
+  {
+    color: #1890FF;
+  }
+  .spacer {
+    flex: 1;
+  }
+  .toolbar__logo {
+    margin-left: 0.5rem
+  }
+  .backdrop {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    top: 0;
+    left: 0;
+  }
+  .logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+  @media (max-width: 760px) {
+    .toolbar_navigation-items {
+      display: none;
+    }
+  }
+  @media (min-width: 769px) {
+    .side-drawer {
+      display: none;
+    }
+  }
+  @media (min-width: 769px) {
+    .toolbar__toggle-button {
+      display: none;
+    }
+  }

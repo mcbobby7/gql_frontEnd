@@ -30,7 +30,9 @@ const HeaderWrapper = styled.div`
         width: 250px;
         height: 200px;
         padding-top: 20px;
-        align-self: center;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
     p {
         width: 100%;
@@ -47,7 +49,7 @@ class Countries extends Component {
             <HeaderWrapper>
                 <img className="img" src="/home2.jpg" alt="logo" />
                 <Row>
-                    <Col xs={2} sm={24} md={24} lg={16} xl={16}>
+                    <Col xs={24} sm={24} md={24} lg={16} xl={16}>
                         <Reveal>
                             <div className="pad">
                                 <h2>
@@ -72,12 +74,12 @@ class Countries extends Component {
                             </div>
                         </Reveal>
                     </Col>
-                    <Col xs={20} sm={24} md={24} lg={8} xl={8}>
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                         <img className="image" src="/home3.jpg" alt="logo" />
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={2} sm={24} md={24} lg={16} xl={16}>
+                    <Col xs={24} sm={24} md={24} lg={16} xl={16}>
                         <Reveal>
                             <div className="pad">
                                 <h4>
@@ -99,12 +101,12 @@ class Countries extends Component {
                             </div>
                         </Reveal>
                     </Col>
-                    <Col xs={20} sm={24} md={24} lg={8} xl={8}>
+                    <Col xs={24} sm={0} md={24} lg={8} xl={8}>
                         <img className="image" src="/nd.jpg" alt="logo" />
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={2} sm={24} md={24} lg={16} xl={16}>
+                    <Col xs={24} sm={24} md={24} lg={16} xl={16}>
                         <Reveal>
                             <div className="pad">
                                 <h4>
@@ -126,12 +128,12 @@ class Countries extends Component {
                             </div>
                         </Reveal>
                     </Col>
-                    <Col xs={20} sm={24} md={24} lg={8} xl={8}>
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                         <img className="image" src="/home5.jpg" alt="logo" />
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={2} sm={24} md={24} lg={16} xl={16}>
+                    <Col xs={24} sm={24} md={24} lg={16} xl={16}>
                         <Reveal>
                             <div className="pad">
                                 <h4>
@@ -153,7 +155,7 @@ class Countries extends Component {
                             </div>
                         </Reveal>
                     </Col>
-                    <Col xs={20} sm={24} md={24} lg={8} xl={8}>
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                         <img className="image" src="/home1.jpg" alt="logo" />
                     </Col>
                 </Row>

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import MyHeader from './Header';
-import { Link } from 'react-router-dom';
 import Footer from './footer';
-import ApolloClient, { InMemoryCache } from 'apollo-boost';
-import { createHttpLink } from 'apollo-link-http';
-import { setContext } from 'apollo-link-context';
 import { ApolloProvider } from 'react-apollo';
 import GlobalStyles from '../../../globalStyles';
-import { Layout, Menu, Icon, Row, Col } from 'antd';
-import AuthContext from '../../context/auth-contex';
+import { Layout, Row, Col } from 'antd';
 import 'semantic-ui-css/semantic.min.css';
-
-const { Header, Sider, Content } = Layout;
+import { ApolloClient } from 'apollo-client';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import Toolbar from './Toolbar/toolBar';
+import SideDrawer from './Toolbar/sideDrawer';
+import Backdrop from './Toolbar/backdrop';
+import Plan from './plan';
+import Footer2 from './footer2';
 
 const httpLink = createHttpLink({
     uri: 'http://localhost:5000/grapghql',
@@ -29,9 +30,11 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-    catch: new InMemoryCache(),
+    cache: new InMemoryCache(),
     link: authLink.concat(httpLink),
 });
+
+const { Header, Sider, Content } = Layout;
 
 const ResultWrapper = styled.div`
     margin: 0;
@@ -42,105 +45,51 @@ const ResultWrapper = styled.div`
 
 class App extends Component {
     state = {
-        collapsed: false,
+        sideDrawerOpen: false,
         token: null,
         userId: null,
     };
 
-    logout = () => {
-        localStorage.setItem('token', '');
-        localStorage.setItem('userId', '');
-        localStorage.setItem('tokenExpiration', '');
-    };
-
-    toggle = () => {
-        this.setState({
-            collapsed: !this.state.collapsed,
+    drawerToggleClickHandler = () => {
+        this.setState(prevState => {
+            return { sideDrawerOpen: !prevState.sideDrawerOpen };
         });
     };
+
+    backdropClickHandler = () => {
+        this.setState({ sideDrawerOpen: false });
+    };
+
     render() {
         const { children } = this.props;
+        let backdrop;
+
+        if (this.state.sideDrawerOpen) {
+            backdrop = <Backdrop click={this.backdropClickHandler} />;
+        }
         return (
             <ApolloProvider client={client}>
-                <AuthContext.Provider
-                    value={{
-                        login: this.login,
-                        logout: this.logout,
-                        token: this.state.token,
-                        userId: this.state.userId,
-                    }}
-                >
-                    <Layout>
-                        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-                            <div className="logo" />
-                            <Menu theme="dark" mode="inline" defaultSelectedKeys={['45']}>
-                                {localStorage.getItem('token') && (
-                                    <Menu.Item key="23">
-                                        <Icon type="user" />
-                                        <span>
-                                            <button onClick={this.logout}>Log Out</button>
-                                        </span>
-                                    </Menu.Item>
-                                )}
-                                {localStorage.getItem('token') && (
-                                    <Menu.Item key="1">
-                                        <Icon type="user" />
-                                        <span>
-                                            <Link style={{ color: 'white' }} to="/events">
-                                                Events
-                                            </Link>
-                                        </span>
-                                    </Menu.Item>
-                                )}
-                                {localStorage.getItem('token') && (
-                                    <Menu.Item key="2">
-                                        <Icon type="video-camera" />
-                                        <span>
-                                            <Link style={{ color: 'white' }} to="/bookings">
-                                                Bookings
-                                            </Link>
-                                        </span>
-                                    </Menu.Item>
-                                )}
-                                <Menu.Item key="3">
-                                    <Icon type="upload" />
-                                    <span>nav 3</span>
-                                </Menu.Item>
-                            </Menu>
-                        </Sider>
-                        <Layout>
-                            <Header style={{ background: '#fff', padding: 0 }}>
-                                <Icon
-                                    className="trigger"
-                                    type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                                    onClick={this.toggle}
-                                />
-                                <MyHeader />
-                            </Header>
-                            <Content
-                                style={{
-                                    background: '#fff',
-                                    margin: '101px 0px',
-                                    minHeight: 280,
-                                    padding: 0,
-                                }}
-                            >
-                                <Row>
-                                    <Col xs={24} sm={24} md={24} lg={16} xl={16}>
-                                        <Content>{children}</Content>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
-                                        <ResultWrapper>
-                                            <h1>List of users goes here</h1>
-                                        </ResultWrapper>
-                                    </Col>
-                                </Row>
-                            </Content>
-                        </Layout>
-                    </Layout>
-                    <Footer />
-                    <GlobalStyles />
-                </AuthContext.Provider>
+                <div style={{ height: '100%' }}>
+                    <Toolbar drawerClickHandler={this.drawerToggleClickHandler} />
+                    <SideDrawer show={this.state.sideDrawerOpen} />
+                    {backdrop}
+                    <main style={{ marginTop: '56px' }}>
+                        <Row>
+                            <Col xs={24} sm={24} md={24} lg={16} xl={16}>
+                                <Content>{children}</Content>
+                            </Col>
+                            <Col xs={24} sm={24} md={24} lg={8} xl={8}>
+                                <ResultWrapper>
+                                    <h1>List of users goes here</h1>
+                                </ResultWrapper>
+                            </Col>
+                        </Row>
+                        <Plan />
+                        <Footer2 />
+                        <Footer />
+                    </main>
+                </div>
+                <GlobalStyles />
             </ApolloProvider>
         );
     }

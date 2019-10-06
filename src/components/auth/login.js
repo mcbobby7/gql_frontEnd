@@ -1,11 +1,5 @@
 import React from 'react';
-import Roll from 'react-reveal/Roll';
-import { Link } from 'react-router-dom';
-import Slide from 'react-reveal/Slide';
-import Zoom from 'react-reveal/Zoom';
-// import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import styled from 'styled-components';
-import AuthContext from '../context/auth-contex';
 import { graphql } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import { Button, Container, Header, Input } from 'semantic-ui-react';
@@ -39,7 +33,12 @@ class SignIn extends React.Component {
             localStorage.setItem('userId', response.data.login.userId);
             localStorage.setItem('tokenExpiration', response.data.login.tokenExpiration);
         }
+        this.setState({
+            email: '',
+            password: '',
+        });
         this.props.history.push('/');
+        document.location.reload();
     };
     onChange = e => {
         const { name, value } = e.target;

@@ -10,7 +10,7 @@ const FooterWrapper = styled.div`
     text-align: center;
     width: 100%;
     height: 50px;
-    h1 {
+    h5 {
         color: white;
     }
 `;
@@ -19,7 +19,7 @@ class Footer extends Component {
     render() {
         return (
             <FooterWrapper>
-                <h1> Copyright Mcbobby Madu.</h1>
+                <h5> All rights reserved, Copyright © 2019 Mcbobby Madu.</h5>
             </FooterWrapper>
         );
     }
