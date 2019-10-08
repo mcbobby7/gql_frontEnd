@@ -1,8 +1,10 @@
+/* eslint-disable sort-keys */
+
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { gql } from 'apollo-boost';
 import { graphql, Query } from 'react-apollo';
-import { Spin, Drawer, Button } from 'antd';
+import { Spin, Drawer, Button, Alert } from 'antd';
 import 'antd/dist/antd.css';
 import { Container, Input, TextArea } from 'semantic-ui-react';
 import 'react-day-picker/lib/style.css';
@@ -86,6 +88,7 @@ class Events extends Component {
         price: '',
         title: '',
         visible: false,
+        success: false,
     };
 
     showDrawer = () => {
@@ -104,13 +107,18 @@ class Events extends Component {
         this.setState({ [name]: value });
     };
     onSubmit = async () => {
-        const response = await this.props.mutate({
+        this.props.mutate({
             variables: {
                 date: this.state.date,
                 description: this.state.description,
                 price: this.state.price,
                 title: this.state.title,
             },
+            refetchQueries: [{ query: allEvents }],
+        });
+        this.setState({
+            success: true,
+            visible: false,
         });
     };
     showModal = () => {
@@ -208,6 +216,9 @@ class Events extends Component {
                     </Drawer>
                 </HeaderWrapper>
                 <HeaderWrapper>
+                    {this.state.success && (
+                        <Alert message="Event Created Successfully" type="success" />
+                    )}
                     <Query query={allEvents}>
                         {({ data, loading, error }) => {
                             if (loading)

@@ -14,6 +14,8 @@ import SideDrawer from './Toolbar/sideDrawer';
 import Backdrop from './Toolbar/backdrop';
 import Plan from './plan';
 import Footer2 from './footer2';
+import Slider from './slider';
+import Hubs from './hubs';
 
 const httpLink = createHttpLink({
     uri: 'http://localhost:5000/grapghql',
@@ -73,17 +75,18 @@ class App extends Component {
                     <Toolbar drawerClickHandler={this.drawerToggleClickHandler} />
                     <SideDrawer show={this.state.sideDrawerOpen} />
                     {backdrop}
-                    <main style={{ marginTop: '56px' }}>
+                    <main style={{ marginTop: '80px' }}>
                         <Row>
                             <Col xs={24} sm={24} md={24} lg={16} xl={16}>
                                 <Content>{children}</Content>
                             </Col>
                             <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                                 <ResultWrapper>
-                                    <h1>List of users goes here</h1>
+                                    <Hubs />
                                 </ResultWrapper>
                             </Col>
                         </Row>
+                        <Slider />
                         <Plan />
                         <Footer2 />
                         <Footer />

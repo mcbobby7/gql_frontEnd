@@ -107,7 +107,6 @@ class Plan extends Component {
                         margin: 30px;
                     }
                     #plan_banner {
-                        background-color: #f4f3ea;
                         margin: 10px;
                         clear: all;
                     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Query, graphql } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import styled from 'styled-components';
-import { Spin, Descriptions } from 'antd';
+import { Spin, Descriptions, Alert } from 'antd';
 import 'antd/dist/antd.css';
 import { Button } from 'semantic-ui-react';
 
@@ -34,12 +34,19 @@ const HeaderWrapper = styled.div`
 `;
 
 class SingleEvent extends Component {
+    state = {
+        success: false,
+    };
+
     onBook = async () => {
         const { params } = this.props.match;
         this.props.mutate({
             variables: {
                 eventId: params.id,
             },
+        });
+        this.setState({
+            success: true,
         });
     };
     render() {
@@ -66,6 +73,9 @@ class SingleEvent extends Component {
                         if (error) return <p>{error.message}</p>;
                         return (
                             <HeaderWrapper>
+                                {this.state.success && (
+                                    <Alert message="Booked Successfully" type="success" />
+                                )}
                                 <Descriptions title={data.event.title} layout="vertical">
                                     <Descriptions.Item label="Title">
                                         {data.event.title}
