@@ -20,6 +20,8 @@ const LoginWrapper = styled.div`
 class SignIn extends React.Component {
     state = {
         email: '',
+        firstName: '',
+        lastName: '',
         password: '',
     };
     onSubmit = async () => {
@@ -27,7 +29,19 @@ class SignIn extends React.Component {
         const response = await this.props.mutate({
             variables: this.state,
         });
-        console.log(response);
+        if (response.data.createUser.token) {
+            localStorage.setItem('token', response.data.createUser.token);
+            localStorage.setItem('userId', response.data.createUser._id);
+            localStorage.setItem('tokenExpiration', response.data.createUser.tokenExpiration);
+        }
+        this.setState({
+            email: '',
+            firstName: '',
+            lastName: '',
+            password: '',
+        });
+        this.props.history.push('/');
+        document.location.reload();
     };
     onChange = e => {
         const { name, value } = e.target;
@@ -35,7 +49,7 @@ class SignIn extends React.Component {
     };
 
     render() {
-        const { email, password } = this.state;
+        const { email, password, firstName, lastName } = this.state;
         return (
             <LoginWrapper>
                 <Container text>
@@ -52,6 +66,32 @@ class SignIn extends React.Component {
                         icon="mail"
                         value={email}
                         name="email"
+                        onChange={this.onChange}
+                        className="input"
+                    />
+                    <label>
+                        <span className="red">*</span>
+                        First Name
+                    </label>
+                    <Input
+                        fluid
+                        placeholder="First Name"
+                        icon="user"
+                        value={firstName}
+                        name="firstName"
+                        onChange={this.onChange}
+                        className="input"
+                    />
+                    <label>
+                        <span className="red">*</span>
+                        Last Name
+                    </label>
+                    <Input
+                        fluid
+                        placeholder="Last Name"
+                        icon="user"
+                        value={lastName}
+                        name="lastName"
                         onChange={this.onChange}
                         className="input"
                     />
@@ -77,9 +117,19 @@ class SignIn extends React.Component {
 }
 
 const register = gql`
-    mutation($email: String!, $password: String!) {
-        createUser(userInput: { email: $email, password: $password }) {
+    mutation($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
+        createUser(
+            userInput: {
+                email: $email
+                password: $password
+                firstName: $firstName
+                lastName: $lastName
+            }
+        ) {
             email
+            token
+            _id
+            tokenExpiration
         }
     }
 `;

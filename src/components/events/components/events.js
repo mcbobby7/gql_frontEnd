@@ -245,15 +245,14 @@ class Events extends Component {
                                             </div>
                                             <div>
                                                 {localStorage.getItem('userId') ===
-                                                event.creator._id ? (
+                                                    event.creator._id && (
                                                     <p>you are the owner of the event</p>
-                                                ) : (
-                                                    <Button type="primary">
-                                                        <Link to={`/events/${event._id}`}>
-                                                            View This Event
-                                                        </Link>
-                                                    </Button>
                                                 )}
+                                                <Button type="primary">
+                                                    <Link to={`/events/${event._id}`}>
+                                                        View This Event
+                                                    </Link>
+                                                </Button>
                                             </div>
                                         </li>
                                     </ul>
