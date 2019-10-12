@@ -15,8 +15,10 @@ const allEvents = gql`
             title
             price
             creator {
+                _id
                 email
                 createdEvents {
+                    _id
                     title
                 }
             }

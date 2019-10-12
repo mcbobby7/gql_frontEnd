@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { graphql } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import { Button, Container, Header, Input } from 'semantic-ui-react';
+import { Button, Container, Header, Input, Message, Form } from 'semantic-ui-react';
 
 const LoginWrapper = styled.div`
     .input {
@@ -23,26 +23,16 @@ class SignIn extends React.Component {
         password: '',
     };
 
-    onSubmit = async () => {
-        console.log(this.state);
-        const response = await this.props.mutate({
-            variables: this.state,
-        });
-        if (response.data.login.token) {
-            localStorage.setItem('token', response.data.login.token);
-            localStorage.setItem('userId', response.data.login.userId);
-            localStorage.setItem('tokenExpiration', response.data.login.tokenExpiration);
-        }
-        this.setState({
-            email: '',
-            password: '',
-        });
-        this.props.history.push('/');
-        document.location.reload();
-    };
     onChange = e => {
         const { name, value } = e.target;
         this.setState({ [name]: value });
+    };
+    completed = async data => {
+        localStorage.setItem('token', data.login.token);
+        localStorage.setItem('userId', data.login.userId);
+        localStorage.setItem('tokenExpiration', data.login.tokenExpiration);
+        this.props.history.push('/');
+        document.location.reload();
     };
 
     render() {
@@ -53,42 +43,61 @@ class SignIn extends React.Component {
                     <Header className="header" as="h2">
                         Log In
                     </Header>
-                    <label>
-                        <span className="red">*</span>
-                        Email
-                    </label>
-                    <Input
-                        fluid
-                        placeholder="Email"
-                        icon="mail"
-                        value={email}
-                        name="email"
-                        onChange={this.onChange}
-                        className="input"
-                    />
-                    <label>
-                        <span className="red">*</span>
-                        Password
-                    </label>
-                    <Input
-                        fluid
-                        placeholder="Password"
-                        type="password"
-                        icon="user"
-                        name="password"
-                        value={password}
-                        onChange={this.onChange}
-                        className="input"
-                    />
-                    <Button onClick={this.onSubmit}>Login</Button>
+                    <Mutation
+                        mutation={login_mutaton}
+                        variables={this.state}
+                        onCompleted={data => this.completed(data)}
+                    >
+                        {(Login, { error, loading }) => (
+                            <React.Fragment>
+                                <Form loading={loading}>
+                                    <label>
+                                        <span className="red">*</span>
+                                        Email
+                                    </label>
+                                    <Input
+                                        fluid
+                                        placeholder="Email"
+                                        icon="mail"
+                                        value={email}
+                                        name="email"
+                                        onChange={this.onChange}
+                                        className="input"
+                                    />
+                                    <label>
+                                        <span className="red">*</span>
+                                        Password
+                                    </label>
+                                    <Input
+                                        fluid
+                                        placeholder="Password"
+                                        type="password"
+                                        icon="user"
+                                        name="password"
+                                        value={password}
+                                        onChange={this.onChange}
+                                        className="input"
+                                    />
+                                    <Button onClick={Login}>Login</Button>
+                                </Form>
+                                {error && (
+                                    <Message
+                                        error
+                                        header="Login Failed"
+                                        content="Invalid Credencials"
+                                    />
+                                )}
+                            </React.Fragment>
+                        )}
+                    </Mutation>
                 </Container>
             </LoginWrapper>
         );
     }
 }
 
-const login = gql`
-    mutation($email: String!, $password: String!) {
+const login_mutaton = gql`
+    mutation Login($email: String!, $password: String!) {
         login(email: $email, password: $password) {
             email
             userId
@@ -98,4 +107,4 @@ const login = gql`
     }
 `;
 
-export default graphql(login)(SignIn);
+export default SignIn;

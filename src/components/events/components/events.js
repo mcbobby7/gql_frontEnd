@@ -71,6 +71,7 @@ const HeaderWrapper = styled.div`
 const FormHolder = styled.div`
     .input {
         margin: 10px;
+        width: 400px;
     }
     .red {
         color: red;
@@ -107,7 +108,7 @@ class Events extends Component {
         this.setState({ [name]: value });
     };
     onSubmit = async () => {
-        this.props.mutate({
+        const response = await this.props.mutate({
             variables: {
                 date: this.state.date,
                 description: this.state.description,

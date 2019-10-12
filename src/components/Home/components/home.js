@@ -5,22 +5,6 @@ import Reveal from 'react-reveal/Reveal';
 import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
 
-const getCountries = gql`
-    {
-        countries {
-            name
-            code
-            continent {
-                name
-            }
-            languages {
-                name
-                native
-            }
-        }
-    }
-`;
-
 const HeaderWrapper = styled.div`
     .img {
         width: 100%;
@@ -42,7 +26,7 @@ const HeaderWrapper = styled.div`
     }
 `;
 
-class Countries extends Component {
+class Home extends Component {
     render() {
         console.log(this.props);
         return (
@@ -164,4 +148,4 @@ class Countries extends Component {
     }
 }
 
-export default graphql(getCountries)(Countries);
+export default Home;
